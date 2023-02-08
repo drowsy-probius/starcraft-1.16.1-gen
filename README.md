@@ -8,7 +8,7 @@
 ```
 와 같은 글을 생성합니다.
 
-## [바로가기](https://drowsy-probius.github.io/starcraft)
+## [바로가기](https://drowsy-probius.github.io/stargen)
 
 
 ## 로직 설명
