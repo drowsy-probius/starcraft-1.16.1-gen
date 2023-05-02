@@ -127,7 +127,7 @@ export const generateRandomString = (
   keyword: string,
   options: Options,
   numberOfParagraphs = 3,
-): string[] => {
+): string => {
   return Array(numberOfParagraphs)
     .fill('')
     .map(() => generateParagraph())
@@ -143,7 +143,8 @@ export const generateRandomString = (
     .map((paragraph) =>
       options.replaceChunk ? replaceChunks(MAGIC_STRING, paragraph) : paragraph,
     )
-    .map((paragraph) => paragraph.replaceAll(MAGIC_STRING, keyword));
+    .map((paragraph) => paragraph.replaceAll(MAGIC_STRING, keyword))
+    .join('');
 };
 
 export const generateRandomComments = (

@@ -64,9 +64,7 @@ function Content(props: ContentProps) {
               </Button>
             </Tooltip>
             <Stack gap="10px" ref={content}>
-              {paragraphs.map((paragraph, idx) => (
-                <Text key={idx}>{paragraph}</Text>
-              ))}
+              <Text>{paragraphs}</Text>
             </Stack>
           </>
         ) : null}
