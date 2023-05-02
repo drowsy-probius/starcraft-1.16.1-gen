@@ -1,14 +1,25 @@
-import { Box, Button, Flex, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  FormLabel,
+  Input,
+  Stack,
+  Switch,
+} from '@chakra-ui/react';
 import React from 'react';
+import { Options } from '../lib/strings';
 
 interface SearchBarProps {
   keyword: string;
   setKeyword: (word: string) => void;
+  options: Options;
+  setOptions: (obj: Options) => void;
   regenerator: () => void;
 }
 
 function SearchBar(props: SearchBarProps) {
-  const { keyword, setKeyword, regenerator } = props;
+  const { keyword, setKeyword, options, setOptions, regenerator } = props;
 
   return (
     <Box
@@ -27,6 +38,50 @@ function SearchBar(props: SearchBarProps) {
           }}
         />
         <Button onClick={regenerator}>re?</Button>
+      </Flex>
+      <Flex dir="column" gap="40px" margin="0px 20px">
+        <Stack direction="row" style={{ padding: '10px 0px' }}>
+          <FormLabel htmlFor="replaceSpace">공백에도 추가</FormLabel>
+          <Switch
+            id="replaceSpace"
+            isChecked={options.replaceSpace}
+            onChange={(event) => {
+              setOptions({
+                ...options,
+                replaceSpace: event.target.checked,
+              });
+              regenerator();
+            }}
+          />
+        </Stack>
+        <Stack direction="row" style={{ padding: '10px 0px' }}>
+          <FormLabel htmlFor="addSeperator">문장 부호 추가</FormLabel>
+          <Switch
+            id="addSeperator"
+            isChecked={options.addSeperator}
+            onChange={(event) => {
+              setOptions({
+                ...options,
+                addSeperator: event.target.checked,
+              });
+              regenerator();
+            }}
+          />
+        </Stack>
+        <Stack direction="row" style={{ padding: '10px 0px' }}>
+          <FormLabel htmlFor="replaceChunk">두번 적용</FormLabel>
+          <Switch
+            id="replaceChunk"
+            isChecked={options.replaceChunk}
+            onChange={(event) => {
+              setOptions({
+                ...options,
+                replaceChunk: event.target.checked,
+              });
+              regenerator();
+            }}
+          />
+        </Stack>
       </Flex>
     </Box>
   );

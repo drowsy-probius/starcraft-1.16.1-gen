@@ -1,3 +1,9 @@
+export interface Options {
+  replaceChunk: boolean;
+  replaceSpace: boolean;
+  addSeperator: boolean;
+}
+
 const MAGIC_STRING = '{>_<}';
 
 const CONTENTS = [
@@ -119,14 +125,24 @@ const replaceSeparators = (paragraph: string) => {
 
 export const generateRandomString = (
   keyword: string,
+  options: Options,
   numberOfParagraphs = 3,
 ): string[] => {
   return Array(numberOfParagraphs)
     .fill('')
     .map(() => generateParagraph())
     .map((paragraph) => replaceChunks(MAGIC_STRING, paragraph))
-    .map((paragraph) => insertToSpaces(MAGIC_STRING, paragraph))
-    .map((paragraph) => replaceSeparators(paragraph))
+    .map((paragraph) =>
+      options.replaceSpace
+        ? insertToSpaces(MAGIC_STRING, paragraph)
+        : paragraph,
+    )
+    .map((paragraph) =>
+      options.addSeperator ? replaceSeparators(paragraph) : paragraph,
+    )
+    .map((paragraph) =>
+      options.replaceChunk ? replaceChunks(MAGIC_STRING, paragraph) : paragraph,
+    )
     .map((paragraph) => paragraph.replaceAll(MAGIC_STRING, keyword));
 };
 
@@ -145,14 +161,7 @@ export const generateRandomComments = (
 };
 
 export const generateRandomUser = () => {
-  const randNum = () => Math.floor(Math.random() * 10);
-  const sizedRandNum = (size: number) =>
-    Array(size)
-      .fill(0)
-      .map(() => randNum())
-      .join('');
-  const aClassLen = Math.floor(Math.random() * 3) + 1;
-  const bClassLen = Math.floor(Math.random() * 3) + 1;
+  const rand8bit = () => Math.floor(Math.random() * 256).toString();
 
-  return `ㅇㅇ (${sizedRandNum(aClassLen)}.${sizedRandNum(bClassLen)})`;
+  return `ㅇㅇ (${rand8bit()}.${rand8bit()})`;
 };

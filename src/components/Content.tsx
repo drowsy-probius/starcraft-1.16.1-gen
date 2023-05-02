@@ -15,24 +15,28 @@ import {
   generateRandomComments,
   generateRandomString,
   generateRandomUser,
+  Options,
 } from '../lib/strings';
 
 interface ContentProps {
   keyword: string;
+  options: Options;
   regenerateWatcher: boolean;
 }
 
 function Content(props: ContentProps) {
-  const { keyword, regenerateWatcher } = props;
-  const [paragraphs, setParagraphs] = useState(generateRandomString(keyword));
+  const { keyword, options, regenerateWatcher } = props;
+  const [paragraphs, setParagraphs] = useState(
+    generateRandomString(keyword, options),
+  );
   const [comments, setComments] = useState(generateRandomComments(keyword));
   const content = useRef<HTMLDivElement>(null);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   useEffect(() => {
-    setParagraphs(generateRandomString(keyword));
+    setParagraphs(generateRandomString(keyword, options));
     setComments(generateRandomComments(keyword));
-  }, [keyword, regenerateWatcher]);
+  }, [keyword, options, regenerateWatcher]);
 
   const copyToClipboard = () => {
     const text = content.current?.innerText;
@@ -49,11 +53,6 @@ function Content(props: ContentProps) {
       <Flex marginBottom="5px" flexDir="column">
         {keyword.length > 0 ? (
           <>
-            <Stack gap="10px" ref={content}>
-              {paragraphs.map((paragraph, idx) => (
-                <Text key={idx}>{paragraph}</Text>
-              ))}
-            </Stack>
             <Tooltip label="copied!" isOpen={isTooltipOpen}>
               <Button
                 onClick={copyToClipboard}
@@ -64,11 +63,16 @@ function Content(props: ContentProps) {
                 <CopyIcon />
               </Button>
             </Tooltip>
+            <Stack gap="10px" ref={content}>
+              {paragraphs.map((paragraph, idx) => (
+                <Text key={idx}>{paragraph}</Text>
+              ))}
+            </Stack>
           </>
         ) : null}
       </Flex>
       <Divider />
-      <List gap="10px" marginTop="10px">
+      <List gap="10px">
         {keyword.length > 0
           ? comments.map((comment, idx) => (
               <ListItem
